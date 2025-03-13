@@ -1,5 +1,5 @@
 {
-    "name": "PayerInputAction",
+    "name": "PlayerInputAction",
     "maps": [
         {
             "name": "Player",
@@ -28,7 +28,7 @@
                 {
                     "name": "",
                     "id": "978bfe49-cc26-4a3d-ab7b-7d7a29327403",
-                    "path": "<Touchscreen>/touch0/delta",
+                    "path": "<Touchscreen>/primaryTouch/position",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Touch;Keyboard&Mouse",
@@ -38,19 +38,8 @@
                 },
                 {
                     "name": "",
-                    "id": "3ea4d645-4504-4529-b061-ab81934c3752",
-                    "path": "<Touchscreen>/touch1/delta",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Touch;Keyboard&Mouse",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "886e731e-7071-4ae4-95c0-e61739dad6fd",
-                    "path": "<Touchscreen>/primaryTouch/tap",
+                    "path": "<Touchscreen>/Press",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Touch;Keyboard&Mouse",
