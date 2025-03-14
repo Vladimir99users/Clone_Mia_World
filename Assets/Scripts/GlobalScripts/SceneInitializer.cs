@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.GlobalScripts
 {
+    // скрипт для инициализации всех объектов на сцене.
     public class SceneInitializer : MonoBehaviour
     {
         [SerializeField] private ItemController itemController;

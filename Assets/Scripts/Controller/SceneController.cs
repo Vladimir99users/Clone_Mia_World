@@ -3,6 +3,8 @@ using UnityEngine;
 
 namespace Assets.Scripts.Controller
 {
+    // скрипт для управления сценой ( а именно перемещение по оси Х c ограничением по сторонам.
+    // в будущем можно сделать так, что бы данный контроллер считывал размер карты.
     public class SceneController : MonoBehaviour
     {
         [SerializeField] private float speed;
@@ -21,10 +23,9 @@ namespace Assets.Scripts.Controller
         }
 
         private void MovedScreen(Vector2 obj)
-        {
-            movingVector = obj;
-        }
-
+            => movingVector = obj;
+        private void MoveScreenByStep(string side)
+            => isMoveStep = side;
 
         private void Update()
         {
@@ -58,10 +59,7 @@ namespace Assets.Scripts.Controller
             => Mathf.Clamp(x, leftEndPosition, rightEndPosition);
 
 
-        private void MoveScreenByStep(string side)
-        {
-            isMoveStep = side;
-        }
+
 
 
         private void OnValidate()

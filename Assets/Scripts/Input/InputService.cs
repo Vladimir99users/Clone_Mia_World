@@ -53,6 +53,8 @@ namespace Assets.Scripts.Input
 
         private IEnumerator MoveObject(Vector2 mousePosition)
         {
+            // Добавил корутину, что бы не реализовывать ещё один метод Update
+            // тут идёт перемещение взятого объекта и смещение сцены в нужную сторону
             while (isObjectDraged == true)
             {
                 OnMovedObject?.Invoke(mousePosition);
@@ -63,6 +65,7 @@ namespace Assets.Scripts.Input
 
         private string SideCheck(Vector2 mousePosition)
         {
+            // Проверка на то, если был взят объект, нужно ли его перемещать по сцене и кужа
             var width = Screen.width;
             var offset = Screen.width / 10;
             var leftSide = offset;
@@ -75,14 +78,10 @@ namespace Assets.Scripts.Input
 
             return SideType.NoneSide;
         }
-
-
-
         private void MoveStartScreen(InputAction.CallbackContext obj)
         {
             if (isObjectDraged == true)
                 return;
-
             deltaScreenPosition = obj.ReadValue<Vector2>();
             OnMovedScreen?.Invoke(deltaScreenPosition);
         }

@@ -3,6 +3,10 @@ using UnityEngine;
 
 namespace Assets.Scripts.Controller
 {
+    /*
+     * Класс для работы с объектами.
+     *В данном случаи только реализовал работу с drag and drop системой, поэтому не пытался залезать дальше в абстракции.
+     */
     public class ItemController : MonoBehaviour
     {
         [SerializeField] private Camera camera;

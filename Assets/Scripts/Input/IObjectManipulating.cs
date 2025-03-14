@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Input
 {
+    // Объект для манипуляций
     public interface IObjectManipulating
     {
         public event Action<Vector2> OnMovedObject;
