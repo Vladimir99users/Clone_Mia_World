@@ -7,6 +7,7 @@ namespace Assets.Scripts.GlobalScripts
     public class SceneInitializer : MonoBehaviour
     {
         [SerializeField] private ItemController itemController;
+        [SerializeField] private SceneController sceneController;
 
         private void Start()
         {
@@ -26,6 +27,7 @@ namespace Assets.Scripts.GlobalScripts
         private void InitializeController(IManipulating manipulating)
         {
             itemController.Initialize(manipulating);
+            sceneController.Initialize(manipulating);
         }
 
     }

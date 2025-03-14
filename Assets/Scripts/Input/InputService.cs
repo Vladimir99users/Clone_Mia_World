@@ -11,8 +11,13 @@ namespace Assets.Scripts.Input
         public event Action OnEndDragObject;
         public event Action<Vector2> OnMovedScreen;
         public event Action<Vector2> OnMovedObject;
+        public event Action<bool> OnMovedScreenByObject;
 
         private bool? isObjectDraged = false;
+        private Vector2 deltaScreenPosition;
+
+        private Coroutine coroutine;
+
         public void Initialize()
         {
             playerInput = new PlayerInputAction();
@@ -21,8 +26,10 @@ namespace Assets.Scripts.Input
             playerInput.Player.TouchClick.started += Drag;
             playerInput.Player.TouchClick.canceled += Drop;
             playerInput.Player.Move.performed += Move;
-        }
 
+            playerInput.Player.DeltaScreen.performed += MoveStartScreen;
+            playerInput.Player.DeltaScreen.canceled += MoveEndScreen;
+        }
         private void Drag(InputAction.CallbackContext obj)
         {
             var mousePosition = ReadMousePosition();
@@ -38,9 +45,37 @@ namespace Assets.Scripts.Input
         {
             var mousePosition = ReadMousePosition();
             if (isObjectDraged == true)
+            {
+                var onClick = obj.ReadValueAsButton();
+                Debug.Log(onClick);
                 OnMovedObject?.Invoke(mousePosition);
-            else
-                OnMovedScreen?.Invoke(mousePosition);
+                OnMovedScreenByObject?.Invoke(SideCheck(mousePosition));
+            }
+        }
+
+        private bool SideCheck(Vector2 mousePosition)
+        {
+            var width = Screen.width;
+            var offset = Screen.width / 10;
+            var leftSide = offset;
+            var rightSide = width - offset;
+            return mousePosition.x < leftSide || mousePosition.x > rightSide;
+        }
+
+
+
+        private void MoveStartScreen(InputAction.CallbackContext obj)
+        {
+            if (isObjectDraged == true)
+                return;
+
+            deltaScreenPosition = obj.ReadValue<Vector2>();
+            OnMovedScreen?.Invoke(deltaScreenPosition);
+        }
+
+        private void MoveEndScreen(InputAction.CallbackContext obj)
+        {
+            OnMovedScreen?.Invoke(Vector2.zero);
         }
 
         private Vector2 ReadMousePosition()
@@ -67,6 +102,7 @@ namespace Assets.Scripts.Input
     public interface IManipulating
     {
         public event Action<Vector2> OnMovedScreen;
+        public event Action<bool> OnMovedScreenByObject;
         public event Action<Vector2> OnMovedObject;
         public event Func<Vector2, bool> OnStartDragObject;
         public event Action OnEndDragObject;

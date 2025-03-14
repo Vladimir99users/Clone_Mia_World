@@ -46,6 +46,15 @@ namespace UnityEngine.InputSystem
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DeltaScreen"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""bfceea3c-48cf-454e-920e-f4ff5a381926"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -68,6 +77,17 @@ namespace UnityEngine.InputSystem
                     ""processors"": """",
                     ""groups"": "";Touch;Keyboard&Mouse"",
                     ""action"": ""TouchClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e05156a2-6327-4034-a027-ccbe3c61995d"",
+                    ""path"": ""<Touchscreen>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse;Touch"",
+                    ""action"": ""DeltaScreen"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -657,6 +677,7 @@ namespace UnityEngine.InputSystem
             m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
             m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
             m_Player_TouchClick = m_Player.FindAction("TouchClick", throwIfNotFound: true);
+            m_Player_DeltaScreen = m_Player.FindAction("DeltaScreen", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -738,12 +759,14 @@ namespace UnityEngine.InputSystem
         private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
         private readonly InputAction m_Player_Move;
         private readonly InputAction m_Player_TouchClick;
+        private readonly InputAction m_Player_DeltaScreen;
         public struct PlayerActions
         {
             private @PlayerInputAction m_Wrapper;
             public PlayerActions(@PlayerInputAction wrapper) { m_Wrapper = wrapper; }
             public InputAction @Move => m_Wrapper.m_Player_Move;
             public InputAction @TouchClick => m_Wrapper.m_Player_TouchClick;
+            public InputAction @DeltaScreen => m_Wrapper.m_Player_DeltaScreen;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -759,6 +782,9 @@ namespace UnityEngine.InputSystem
                 @TouchClick.started += instance.OnTouchClick;
                 @TouchClick.performed += instance.OnTouchClick;
                 @TouchClick.canceled += instance.OnTouchClick;
+                @DeltaScreen.started += instance.OnDeltaScreen;
+                @DeltaScreen.performed += instance.OnDeltaScreen;
+                @DeltaScreen.canceled += instance.OnDeltaScreen;
             }
 
             private void UnregisterCallbacks(IPlayerActions instance)
@@ -769,6 +795,9 @@ namespace UnityEngine.InputSystem
                 @TouchClick.started -= instance.OnTouchClick;
                 @TouchClick.performed -= instance.OnTouchClick;
                 @TouchClick.canceled -= instance.OnTouchClick;
+                @DeltaScreen.started -= instance.OnDeltaScreen;
+                @DeltaScreen.performed -= instance.OnDeltaScreen;
+                @DeltaScreen.canceled -= instance.OnDeltaScreen;
             }
 
             public void RemoveCallbacks(IPlayerActions instance)
@@ -953,6 +982,7 @@ namespace UnityEngine.InputSystem
         {
             void OnMove(InputAction.CallbackContext context);
             void OnTouchClick(InputAction.CallbackContext context);
+            void OnDeltaScreen(InputAction.CallbackContext context);
         }
         public interface IUIActions
         {

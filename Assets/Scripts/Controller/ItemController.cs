@@ -20,9 +20,6 @@ namespace Assets.Scripts.Controller
             manipulating.OnEndDragObject += DropObject;
             manipulating.OnMovedObject += MovedObject;
         }
-
-
-
         private void OnDisable()
         {
             UnSubscribe();
