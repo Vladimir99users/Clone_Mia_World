@@ -10,10 +10,10 @@ namespace Assets.Scripts.Controller
         [SerializeField] private Camera camera;
         [SerializeField] private float leftEndPosition;
         [SerializeField] private float rightEndPosition;
-        private IManipulating manipulating;
+        private IScreenManipulating manipulating;
         private Vector2 movingVector;
-        private bool isMoveStep = false;
-        public void Initialize(IManipulating manipulating)
+        private string isMoveStep = SideType.NoneSide;
+        public void Initialize(IScreenManipulating manipulating)
         {
             this.manipulating = manipulating;
             this.manipulating.OnMovedScreen += MovedScreen;
@@ -22,40 +22,34 @@ namespace Assets.Scripts.Controller
 
         private void MovedScreen(Vector2 obj)
         {
-            float deltaX = obj.x;
-            //  Debug.Log(deltaX);
             movingVector = obj;
-
         }
 
 
         private void Update()
         {
-            if (isMoveStep)
+            if (isMoveStep == SideType.RightSide)
             {
-                camera.transform.position = new Vector3(camera.transform.position.x + step * Time.deltaTime,
-                    camera.transform.position.y,
-                    camera.transform.position.z);
-
-                var x = ClampScreen(camera.transform.position.x);
-                camera.transform.position = new Vector3(x, camera.transform.position.y, camera.transform.position.z);
+                float offset = camera.transform.position.x + step * Time.deltaTime;
+                Move(offset);
+            }
+            else if (isMoveStep == SideType.LeftSide)
+            {
+                float offset = camera.transform.position.x - step * Time.deltaTime;
+                Move(offset);
             }
             else
             {
                 if (movingVector.Equals(Vector2.zero))
                     return;
 
-                Move();
+                float offset = camera.transform.position.x - movingVector.x * speed * Time.deltaTime;
+                Move(offset);
             }
         }
-
-        private void Move()
+        private void Move(float offset)
         {
-            float deltaX = movingVector.x;
-            camera.transform.position = new Vector3(camera.transform.position.x - deltaX * speed * Time.deltaTime,
-                camera.transform.position.y,
-                camera.transform.position.z);
-
+            camera.transform.position = new Vector3(offset, camera.transform.position.y, camera.transform.position.z);
             var x = ClampScreen(camera.transform.position.x);
             camera.transform.position = new Vector3(x, camera.transform.position.y, camera.transform.position.z);
         }
@@ -64,10 +58,9 @@ namespace Assets.Scripts.Controller
             => Mathf.Clamp(x, leftEndPosition, rightEndPosition);
 
 
-        private void MoveScreenByStep(bool isCheck)
+        private void MoveScreenByStep(string side)
         {
-            isMoveStep = isCheck;
-            // Debug.Log(isMoveStep);
+            isMoveStep = side;
         }
 
 

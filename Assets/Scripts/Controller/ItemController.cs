@@ -7,9 +7,9 @@ namespace Assets.Scripts.Controller
     {
         [SerializeField] private Camera camera;
         [SerializeField] private LayerMask interectiveMask;
-        private IManipulating manipulating;
+        private IObjectManipulating manipulating;
         private IManipulated dragItem;
-        public void Initialize(IManipulating manipulating)
+        public void Initialize(IObjectManipulating manipulating)
         {
             this.manipulating = manipulating;
             Subscribe();

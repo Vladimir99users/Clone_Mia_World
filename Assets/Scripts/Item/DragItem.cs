@@ -13,7 +13,6 @@ namespace Assets.Scripts.Item
             => Drop();
         private void Drag(Vector2 vector)
         {
-            Debug.Log($"Drag this object name {gameObject.name}");
             transform.position = vector;
             rb2D.gravityScale = 0;
         }
@@ -27,6 +26,16 @@ namespace Assets.Scripts.Item
                 rb2D.bodyType = RigidbodyType2D.Static;
         }
 
+        private void OnTriggerStay2D(Collider2D collider)
+        {
+            var enterLayerName = LayerMask.LayerToName(collider.transform.gameObject.layer);
+            if (IsCorrectLayer(enterLayerName))
+            {
+                rb2D.gravityScale = 0;
+                rb2D.bodyType = RigidbodyType2D.Static;
+            }
+        }
+
         private void OnTriggerExit2D(Collider2D collider)
         {
             var exitLayerName = LayerMask.LayerToName(collider.transform.gameObject.layer);
@@ -35,7 +44,7 @@ namespace Assets.Scripts.Item
         }
 
         private bool IsCorrectLayer(string layerName)
-            => layerName == "Ground" || layerName == "Obstacle";
+            => layerName is LayerType.GroundLayer or LayerType.ObstacleLayer;
 
         protected override void CheckValidate()
         {

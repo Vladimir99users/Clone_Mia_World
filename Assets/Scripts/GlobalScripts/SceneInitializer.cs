@@ -21,7 +21,7 @@ namespace Assets.Scripts.GlobalScripts
         private IManipulating GetManipulator()
         {
             var inputService = new InputService();
-            inputService.Initialize();
+            inputService.Initialize(this);
             return inputService;
         }
         private void InitializeController(IManipulating manipulating)
