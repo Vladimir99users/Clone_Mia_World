@@ -36,8 +36,11 @@ namespace Assets.Scripts.Controller
 
         private bool DragObject(Vector2 mousePosition)
         {
-            Debug.DrawRay(camera.ScreenToWorldPoint(mousePosition), Vector2.zero, Color.red);
             RaycastHit2D hit = Physics2D.Raycast(camera.ScreenToWorldPoint(mousePosition), Vector2.zero, 50f, interectiveMask);
+
+            if (hit.transform is null)
+                return false;
+
             var gameObj = hit.transform.gameObject;
             if (gameObj.TryGetComponent<IStartManipulated>(out IStartManipulated startManipulated))
             {
